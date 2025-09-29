@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>31 Days of Why I Love You</title>
+<style>
+  body, html {
+    margin: 0; padding: 0; height: 100%; font-family: system-ui, sans-serif;
+    background: linear-gradient(150deg, #2e004f, #8b2500, #cc7a00);
+    color: white; display: flex; justify-content: center; align-items: center;
+    overflow: hidden;
+  }
+
+  .card {
+    position: relative; z-index: 10;
+    max-width: 760px; width: 90%;
+    background: linear-gradient(180deg, rgba(0,0,0,0.25), rgba(0,0,0,0.35));
+    border-radius: 18px; padding: 28px; text-align: center;
+    border: 3px solid rgba(255,140,59,0.25); box-shadow: 0 12px 40px rgba(0,0,0,0.6);
+  }
+
+  .header {
+    font-size: 24px; font-weight: bold; margin-bottom: 12px; text-shadow: 0 4px 10px rgba(0,0,0,0.8);
+  }
+
+  .message {
+    font-size: 22px; line-height: 1.4; background: rgba(0,0,0,0.2); padding: 16px; border-radius: 12px;
+    min-height: 80px; margin-bottom: 12px;
+  }
+
+  .info {
+    font-style: italic; color: rgba(255,255,255,0.7); margin-bottom: 12px;
+  }
+
+  .countdown {
+    font-weight: bold; color: #f7c948; margin-bottom: 12px;
+  }
+
+  .bat, .pumpkin {
+    position: absolute; font-size: 32px; opacity: 0.9; pointer-events: none;
+  }
+
+  @keyframes bat-fly {
+    0% {transform: translateX(0) translateY(0) rotate(0deg);}
+    50% {transform: translateX(30px) translateY(-10px) rotate(-10deg);}
+    100% {transform: translateX(-30px) translateY(10px) rotate(10deg);}
+  }
+
+  .bat { animation: bat-fly 6s ease-in-out infinite alternate; }
+
+  @keyframes pumpkin-fall {
+    0% {transform: translateY(-50px) rotate(0deg); opacity:0;}
+    20% {opacity:1;}
+    100% {transform: translateY(110vh) rotate(360deg); opacity:0;}
+  }
+  .pumpkin { animation-name: pumpkin-fall; animation-timing-function: linear; animation-iteration-count: infinite; }
+</style>
+</head>
+<body>
+  <!-- Floating bats -->
+  <div class="bat" style="top:10%; left:10%;">🦇</div>
+  <div class="bat" style="top:20%; left:70%; animation-delay:2s;">🦇</div>
+  <div class="bat" style="top:30%; left:35%; animation-delay:1s;">🦇</div>
+
+  <!-- Falling pumpkins -->
+  <script>
+    for(let i=0;i<12;i++){
+      let c = document.createElement('div');
+      c.className='pumpkin';
+      c.textContent='🎃';
+      c.style.left = Math.random()*100 + '%';
+      c.style.animationDelay = Math.random()*0 + 's';
+      c.style.animationDuration = 3 + Math.random()*3 + 's';
+      document.body.appendChild(c);
+    }
+  </script>
+
+  <div class="card">
+    <div class="header">🎃 👻 31 Days of Why I Love You</div>
+    <div id="countdown" class="countdown">Loading countdown...</div>
+    <div id="message" class="message">Loading message...</div>
+    <div id="dayinfo" class="info"></div>
+  </div>
+
+  <script>
+    const messages = [
+      "I love how caring you are ❤️",
+      "I love your laugh, it makes my day brighter ✨",
+      "I love how you support me no matter what 💪",
+      "I love how beautiful you are inside and out 🌸",
+      "I love how smart and thoughtful you are 🧠",
+      "I love that you make me want to be better 💙",
+      "I love how we can talk about anything 🗣️",
+      "I love your smile, it’s the best thing in the world 😊",
+      "I love your strength and determination 🔥",
+      "I love how safe and happy I feel with you 🏡"
+      // Add up to 31 messages for full October
+    ];
+
+    function update() {
+      const now = new Date();
+      const nowMT = new Date(now.toLocaleString('en-US', {timeZone: 'America/Denver'}));
+
+      const currentYear = nowMT.getFullYear();
+      const birthday = new Date(`${currentYear}-10-31T00:00:00`);
+
+      const diff = birthday - nowMT;
+      const countdownEl = document.getElementById('countdown');
+      if(diff <= 0){
+        countdownEl.textContent = "🎂 Happy Birthday! 🎉🎃";
+      } else {
+        const days = Math.floor(diff / (1000*60*60*24));
+        const hours = Math.floor((diff/(1000*60*60))%24);
+        const minutes = Math.floor((diff/(1000*60))%60);
+        const seconds = Math.floor((diff/1000)%60);
+        countdownEl.textContent = `${days}d ${hours}h ${minutes}m ${seconds}s until your birthday 🎂`;
+      }
+
+      // Automatic daily message
+      const month = nowMT.getMonth(); // October = 9
+      const day = nowMT.getDate();
+      let dayIndex;
+      if(month === 9 && day >=1 && day <= messages.length){
+        dayIndex = day-1;
+      } else if(month>9){
+        dayIndex = messages.length-1;
+      } else {
+        dayIndex = 0;
+      }
+
+      document.getElementById('message').textContent = messages[dayIndex] || "Happy Birthday, my love 🎂🎃👻";
+      document.getElementById('dayinfo').textContent = `Day ${dayIndex+1} of ${messages.length}`;
+    }
+
+    update();
+    setInterval(update, 1000);
+  </script>
+</body>
+</html>
